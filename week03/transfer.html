@@ -1,0 +1,47 @@
+<script>
+function converStringToNumber (str, x) {
+    if (arguments.length < 2) {
+      x = 10;
+    }
+    let chars = str.split('');
+    let number = 0;
+    let fraction = 1;
+    let hasFraction = false;
+    for (let i = 0; i < chars.length; i++) {
+      if (chars[i] === '.') {
+        hasFraction = true;
+        continue;
+      }
+      if (hasFraction) {
+        console.log(fraction, chars[i], number);
+        fraction /= x;
+        number += (chars[i].codePointAt(0) - '0'.codePointAt(0)) * fraction;
+      } else {
+        number *= x;
+        number += chars[i].codePointAt(0) - '0'.codePointAt(0);
+      }
+    }
+    fraction /= x;
+    return number;
+  }
+  console.log(converStringToNumber('123.0123', 10));
+  function convertNumberToString (num, x) {
+    let integer = Math.floor(num);
+    let fraction = num - integer;
+    let fractionLen = String(fraction).split('.')[1].length;
+    let str = '';
+    while (integer > 0) {
+      str = String(integer % x) + str;
+      integer = Math.floor(integer / 10);
+    }
+    str += '.';
+    while (fractionLen >= 1) {
+      let temp = Math.floor(fraction * 10);
+      fractionLen--;
+      fraction = (fraction * 10 - temp).toFixed(fractionLen);
+      str = str + String(temp % x);
+    }
+    return str;
+  }
+  console.log(convertNumberToString(123.123, 10));
+</script>
